@@ -3,10 +3,14 @@
  */
 package at.ac.fhcampuswien
 
+import java.lang.IllegalArgumentException
+import java.util.Random
+
 class App {
     // Game logic for a number guessing game
     fun playNumberGame(digitsToGuess: Int = 4) {
         //TODO: build a menu which calls the functions and works with the return values
+        println(generateRandomNonRepeatingNumber(digitsToGuess))
     }
 
     /**
@@ -24,8 +28,19 @@ class App {
      * @throws IllegalArgumentException if the length is more than 9 or less than 1.
      */
     val generateRandomNonRepeatingNumber: (Int) -> Int = { length ->
-        //TODO implement the function
-        0   // return value is a placeholder
+        if (length > 9 || length < 1)
+            throw IllegalArgumentException("Length must be between 1 and 9!")
+
+        val listOfNumbers = mutableListOf(1,2,3,4,5,6,7,8,9)
+        listOfNumbers.shuffle()
+        var result: String = "";
+
+        for (i in 0 until length) {
+            result += listOfNumbers[0].toString();
+            listOfNumbers.removeAt(0);
+        }
+
+        result.toInt();   // return value is a placeholder
     }
 
     /**
@@ -45,12 +60,33 @@ class App {
      * @throws IllegalArgumentException if the inputs do not have the same number of digits.
      */
     val checkUserInputAgainstGeneratedNumber: (Int, Int) -> CompareResult = { input, generatedNumber ->
-        //TODO implement the function
-        CompareResult(0, 0)   // return value is a placeholder
+        if (input.toString().length != generatedNumber.toString().length)
+            throw IllegalArgumentException("Input and generated number must have the same amount of digits!")
+
+        var correctDigitCount: Int = 0
+        var correctDigitAndPositionCount: Int = 0
+        val inputString = input.toString()
+        val generatedNumberString = generatedNumber.toString()
+        val matchedNumbers = mutableListOf<Int>()
+
+        for (i in inputString.indices) {
+            if(generatedNumberString.contains(inputString[i]) && !matchedNumbers.contains(inputString[i].code)) {
+                correctDigitCount++;
+                matchedNumbers.add(inputString[i].code)
+            }
+
+            if (inputString[i] == generatedNumberString[i])
+                correctDigitAndPositionCount++
+        }
+
+        CompareResult(correctDigitCount, correctDigitAndPositionCount)   // return value is a placeholder
     }
 }
 
 fun main() {
     println("Hello World!")
     // TODO: call the App.playNumberGame function with and without default arguments
+    val app: App = App();
+    println(app.checkUserInputAgainstGeneratedNumber(8576, 8576))
+    //app.playNumberGame(9);
 }
