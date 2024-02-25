@@ -3,14 +3,25 @@
  */
 package at.ac.fhcampuswien
 
-import java.lang.IllegalArgumentException
-import java.util.Random
+import java.util.*
 
 class App {
     // Game logic for a number guessing game
     fun playNumberGame(digitsToGuess: Int = 4) {
-        //TODO: build a menu which calls the functions and works with the return values
-        println(generateRandomNonRepeatingNumber(digitsToGuess))
+        val generatedNumber: Int = generateRandomNonRepeatingNumber(digitsToGuess)
+        println("The number you have to guess has $digitsToGuess digits! Good luck!")
+
+        while (true) {
+            println("Please input your guess")
+            var inputOfUser = readln().toInt()
+            val result = checkUserInputAgainstGeneratedNumber(inputOfUser, generatedNumber)
+            println(result)
+
+            if (result.m == digitsToGuess && result.n == digitsToGuess) {
+                println("Congratulations, you won!")
+                break
+            }
+        }
     }
 
     /**
@@ -40,7 +51,7 @@ class App {
             listOfNumbers.removeAt(0);
         }
 
-        result.toInt();   // return value is a placeholder
+        result.toInt();
     }
 
     /**
@@ -79,14 +90,11 @@ class App {
                 correctDigitAndPositionCount++
         }
 
-        CompareResult(correctDigitCount, correctDigitAndPositionCount)   // return value is a placeholder
+        CompareResult(correctDigitCount, correctDigitAndPositionCount)
     }
 }
 
 fun main() {
-    println("Hello World!")
-    // TODO: call the App.playNumberGame function with and without default arguments
     val app: App = App();
-    println(app.checkUserInputAgainstGeneratedNumber(8576, 8576))
-    //app.playNumberGame(9);
+    app.playNumberGame()
 }
