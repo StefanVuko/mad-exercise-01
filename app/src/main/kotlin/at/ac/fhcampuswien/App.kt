@@ -97,4 +97,5 @@ class App {
 fun main() {
     val app: App = App();
     app.playNumberGame()
+    app.playNumberGame(2)
 }
